@@ -3,14 +3,21 @@ async function main( ) {
 
     // loading and compiling the webassembly module
     const wasm= await WebAssembly.instantiateStreaming(
-        fetch("./main.wasm"))
+        fetch("./main.wasm"),
+
+            // details about imports done by the WASM virtual machine
+            {
+                "js": {
+                    "print":
+                        x => console.log("print function called from WASM virtual machine with argument", x)
+                }
+            }
+        )
 
     console.log(wasm)
 
-    console.log(
-        //* using the add function that we defined in the WASM module
-        wasm.instance.exports.add(34, 35)
-    )
+    // invoking WASM function from javascript
+    wasm.instance.exports.add( )
 }
 
 main( )
